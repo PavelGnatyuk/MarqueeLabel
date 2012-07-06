@@ -16,6 +16,7 @@
 		AF99835B15A6CE7D0073BAB2 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = AF99835A15A6CE7D0073BAB2 /* ViewController.m */; };
 		AF99835E15A6CE7D0073BAB2 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AF99835C15A6CE7D0073BAB2 /* ViewController.xib */; };
 		AF99836A15A6D40E0073BAB2 /* MarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = AF99836915A6D40E0073BAB2 /* MarqueeLabel.m */; };
+		AF99838E15A70B570073BAB2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF99838D15A70B570073BAB2 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		AF99835D15A6CE7D0073BAB2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
 		AF99836815A6D40E0073BAB2 /* MarqueeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MarqueeLabel.h; sourceTree = "<group>"; };
 		AF99836915A6D40E0073BAB2 /* MarqueeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MarqueeLabel.m; sourceTree = "<group>"; };
+		AF99838D15A70B570073BAB2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AF99838E15A70B570073BAB2 /* QuartzCore.framework in Frameworks */,
 				AF99834815A6CE7D0073BAB2 /* UIKit.framework in Frameworks */,
 				AF99834A15A6CE7D0073BAB2 /* Foundation.framework in Frameworks */,
 				AF99834C15A6CE7D0073BAB2 /* CoreGraphics.framework in Frameworks */,
@@ -70,6 +73,7 @@
 		AF99834615A6CE7D0073BAB2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AF99838D15A70B570073BAB2 /* QuartzCore.framework */,
 				AF99834715A6CE7D0073BAB2 /* UIKit.framework */,
 				AF99834915A6CE7D0073BAB2 /* Foundation.framework */,
 				AF99834B15A6CE7D0073BAB2 /* CoreGraphics.framework */,
@@ -293,6 +297,7 @@
 				AF99836315A6CE7D0073BAB2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

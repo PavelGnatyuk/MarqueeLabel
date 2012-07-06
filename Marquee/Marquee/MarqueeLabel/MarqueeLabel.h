@@ -10,7 +10,8 @@
 
 @interface MarqueeLabel : UIView
 
-@property (copy)    NSString *text;
-@property (assign)  CGFloat  animationRate;      // pixels per second
+@property (nonatomic, copy)     NSString    *text;
+@property (nonatomic, retain)   UIFont      *font;
+@property (nonatomic, assign)   CGFloat     animationRate;      // pixels per second
 
 @end

@@ -11,7 +11,10 @@
 @interface ViewController ()
 
 @property (retain, nonatomic) IBOutlet UITextField *textFieldUpdate;
+
 - (IBAction)clickUpdate:(id)sender;
+- (IBAction)clickChangeFont:(id)sender;
+- (IBAction)clickChangeColor:(id)sender;
 
 @end
 
@@ -45,6 +48,15 @@
 
 - (IBAction)clickUpdate:(id)sender {
     [[self labelText] setText:[[self textFieldUpdate] text]];
+}
+
+- (IBAction)clickChangeFont:(id)sender {
+    UIFont *font = [UIFont fontWithName:@"Helvetica-Bold" size:17.0];
+    [[self labelText] setFont:font];
+}
+
+- (IBAction)clickChangeColor:(id)sender {
+    [(UILabel *)[self labelText] setTextColor:[UIColor redColor]];
 }
 
 @end
