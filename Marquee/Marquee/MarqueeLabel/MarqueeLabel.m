@@ -75,7 +75,7 @@
     return ( ( [self text] != nil) && ( !CGRectContainsRect( [self bounds], [self labelFrame] ) ) );
 }
 
-- (void)returnLabelToOriginImmediately 
+- (void)returnToOrigin 
 {
     if ( !CGRectEqualToRect( [self labelChild].frame, [self labelFrame] ) ) {
         [UIView animateWithDuration:0
@@ -157,7 +157,7 @@
                              
                          }
                          completion:^(BOOL finished){
-                             [self returnLabelToOriginImmediately];
+                             [self returnToOrigin];
                              [[self labelChild] setFrame:[self labelFrame]];
                              [[self labelChild] setText:_text];
                              
