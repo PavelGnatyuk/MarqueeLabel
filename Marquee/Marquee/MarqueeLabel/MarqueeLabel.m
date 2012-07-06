@@ -20,6 +20,7 @@ static CGFloat const _fadingLength = 10.0f;
 @property (assign) NSTimeInterval   animationBorderDelay;
 @property (assign) BOOL             paused;
 @property (assign, readonly) BOOL   labelShouldScroll;
+@property (assign) CGPoint          beginPoint;
 @property (assign) CGPoint          endPoint;
 @property (assign) CGFloat          fadingLength;
 
@@ -32,7 +33,7 @@ static CGFloat const _fadingLength = 10.0f;
 @synthesize text = _text, font = _font;
 @synthesize labelChild, labelFrame, extraLabelFrame, animationDuration, animationBorderDelay, animationRate;
 @synthesize fadingLength, paused;
-@synthesize endPoint;
+@synthesize beginPoint, endPoint;
 @synthesize tapRecognizer = _tapRecognizer;
 @dynamic labelShouldScroll;
 
@@ -101,14 +102,14 @@ static CGFloat const _fadingLength = 10.0f;
     if ( [self labelShouldScroll] ) {
         
         CABasicAnimation* moving = [CABasicAnimation animationWithKeyPath:@"position"];
-        moving.fromValue = [NSValue valueWithCGPoint:[[[self labelChild] layer] position]];
+        moving.fromValue = [NSValue valueWithCGPoint:[self beginPoint]];
         moving.toValue = [NSValue valueWithCGPoint:[self endPoint]];
         moving.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         moving.beginTime = 0;
         moving.duration = interval;
         moving.autoreverses = YES;
         moving.repeatCount = INT_MAX;
-        [[[self labelChild] layer] addAnimation:moving forKey:@"position"];
+        [[[self labelChild] layer] addAnimation:moving forKey:@"moving"];
         
     }
     return;
@@ -124,6 +125,7 @@ static CGFloat const _fadingLength = 10.0f;
     [self setLabelFrame:CGRectMake( [self fadingLength], 0, expectedLabelSize.width + [self fadingLength], [self bounds].size.height )];
     [self setExtraLabelFrame:CGRectOffset( [self labelFrame], -expectedLabelSize.width + self.bounds.size.width - 2 * [self fadingLength], 0.0)];
     
+    [self setBeginPoint:CGPointMake( [self fadingLength] + [self bounds].size.width / 2 - [self fadingLength], [self bounds].size.height / 2 )];
     [self setEndPoint:CGPointMake( [self bounds].size.width - 2 * [self fadingLength] - expectedLabelSize.width / 2, [self bounds].size.height / 2 ) ];
     [self setAnimationDuration:( (NSTimeInterval) fabs([self extraLabelFrame].origin.x) / [self animationRate] )];
 }
@@ -216,10 +218,33 @@ static CGFloat const _fadingLength = 10.0f;
     if ( [self labelShouldScroll] ) {
         [self setPaused:![self paused]];
         if ( [self paused] ) {
-            [[[self labelChild] layer] removeAnimationForKey:@"position"];
+            
+            CALayer *layer = [[[self labelChild] layer] presentationLayer];  
+            CGPoint point = [layer position]; 
+            [[[self labelChild] layer] removeAnimationForKey:@"moving"];
+            [[[self labelChild] layer] setPosition:point];
+            
         }
         else {
-            [self scroll:[self animationDuration]];
+            
+            [CATransaction setCompletionBlock:^{
+                [self scroll:[self animationDuration]];
+            }];
+            
+            CALayer *layer = [[[self labelChild] layer] presentationLayer];  
+            CGPoint point = [layer position]; 
+            
+            [CATransaction begin];
+            CABasicAnimation* moving = [CABasicAnimation animationWithKeyPath:@"position"];
+            moving.fromValue = [NSValue valueWithCGPoint:point];
+            moving.toValue = [NSValue valueWithCGPoint:[self endPoint]];
+            moving.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
+            moving.beginTime = 0;
+            moving.duration = 0.2;
+            moving.autoreverses = NO;
+            [[[self labelChild] layer] addAnimation:moving forKey:@"moving"];
+            [CATransaction commit];
+            
         }
     }
 }
