@@ -9,7 +9,7 @@
 #import "MarqueeLabel.h"
 #import <QuartzCore/QuartzCore.h>
 
-static CGFloat const _fadingLength = 10.0f;
+static CGFloat const _fadingLength = 12.0f;
 
 @interface MarqueeLabel ()
 
@@ -82,7 +82,7 @@ static CGFloat const _fadingLength = 10.0f;
     
     [self addFadingOf:_fadingLength];
     
-    [self setAnimationRate:24.0];
+    [self setAnimationRate:32.0];
     [self setAnimationBorderDelay:0.6];
     [self setPaused:NO];
     
@@ -219,32 +219,20 @@ static CGFloat const _fadingLength = 10.0f;
         [self setPaused:![self paused]];
         if ( [self paused] ) {
             
-            CALayer *layer = [[[self labelChild] layer] presentationLayer];  
-            CGPoint point = [layer position]; 
-            [[[self labelChild] layer] removeAnimationForKey:@"moving"];
-            [[[self labelChild] layer] setPosition:point];
+            CALayer *layer = [[self labelChild] layer];  
+            CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
+            layer.speed = 0.0;
+            layer.timeOffset = pausedTime;
             
         }
         else {
-            
-            [CATransaction setCompletionBlock:^{
-                [self scroll:[self animationDuration]];
-            }];
-            
-            CALayer *layer = [[[self labelChild] layer] presentationLayer];  
-            CGPoint point = [layer position]; 
-            
-            [CATransaction begin];
-            CABasicAnimation* moving = [CABasicAnimation animationWithKeyPath:@"position"];
-            moving.fromValue = [NSValue valueWithCGPoint:point];
-            moving.toValue = [NSValue valueWithCGPoint:[self endPoint]];
-            moving.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
-            moving.beginTime = 0;
-            moving.duration = 0.2;
-            moving.autoreverses = NO;
-            [[[self labelChild] layer] addAnimation:moving forKey:@"moving"];
-            [CATransaction commit];
-            
+            CALayer *layer = [[self labelChild] layer];  
+            CFTimeInterval pausedTime = [layer timeOffset];
+            layer.speed = 1.0;
+            layer.timeOffset = 0.0;
+            layer.beginTime = 0.0;
+            CFTimeInterval timeSincePause = [layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
+            layer.beginTime = timeSincePause;
         }
     }
 }
