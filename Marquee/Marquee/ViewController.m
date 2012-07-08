@@ -15,6 +15,8 @@
 - (IBAction)clickUpdate:(id)sender;
 - (IBAction)clickChangeFont:(id)sender;
 - (IBAction)clickChangeColor:(id)sender;
+- (IBAction)clickPlay:(id)sender;
+- (IBAction)clickPause:(id)sender;
 
 @end
 
@@ -57,6 +59,14 @@
 
 - (IBAction)clickChangeColor:(id)sender {
     [(UILabel *)[self labelText] setTextColor:[UIColor redColor]];
+}
+
+- (IBAction)clickPlay:(id)sender {
+    [[self labelText] play];
+}
+
+- (IBAction)clickPause:(id)sender {
+    [[self labelText] pause];
 }
 
 @end

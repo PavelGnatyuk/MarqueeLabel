@@ -14,4 +14,7 @@
 @property (nonatomic, retain)   UIFont      *font;
 @property (nonatomic, assign)   CGFloat     animationRate;      // pixels per second
 
+- (void)pause;
+- (void)play;
+
 @end

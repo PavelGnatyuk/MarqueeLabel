@@ -11,6 +11,9 @@
 
 static CGFloat const _fadingLength = 12.0f;
 
+void (^PlayLayer)(CALayer *);
+void (^PauseLayer)(CALayer *);
+
 @interface MarqueeLabel ()
 
 @property (retain) UILabel          *labelChild;
@@ -219,22 +222,47 @@ static CGFloat const _fadingLength = 12.0f;
         [self setPaused:![self paused]];
         CALayer *layer = [[self labelChild] layer];  
         if ( [self paused] ) {
-            
-            CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
-            layer.speed = 0.0;
-            layer.timeOffset = pausedTime;
-            
+            PauseLayer(layer);
         }
         else {
-            
-            CFTimeInterval pausedTime = [layer timeOffset];
-            layer.speed = 1.0;
-            layer.timeOffset = 0.0;
-            layer.beginTime = 0.0;
-            CFTimeInterval timeSincePause = [layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
-            layer.beginTime = timeSincePause;
+            PlayLayer(layer);
         }
     }
 }
 
+- (void)play
+{
+    if ( [self labelShouldScroll] && [self paused] ) {
+        [self setPaused:NO];
+        CALayer *layer = [[self labelChild] layer];  
+        PlayLayer(layer);
+    }
+}
+
+- (void)pause
+{
+    if ( [self labelShouldScroll] && ![self paused] ) {
+        [self setPaused:YES];
+        CALayer *layer = [[self labelChild] layer];  
+        PauseLayer(layer);
+    }
+}
+
 @end
+
+void (^PauseLayer)(CALayer *) = ^void(CALayer *layer) {
+    CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
+    layer.speed = 0.0;
+    layer.timeOffset = pausedTime;
+};
+
+
+void (^PlayLayer)(CALayer *) = ^void(CALayer *layer) {
+    CFTimeInterval pausedTime = [layer timeOffset];
+    layer.speed = 1.0;
+    layer.timeOffset = 0.0;
+    layer.beginTime = 0.0;
+    CFTimeInterval timeSincePause = [layer convertTime:CACurrentMediaTime() fromLayer:nil] - pausedTime;
+    layer.beginTime = timeSincePause;
+};
+
