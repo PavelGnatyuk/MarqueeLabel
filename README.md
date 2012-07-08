@@ -1,4 +1,4 @@
-MyPhone
+Marquee UI control
 =======
 
-My first iPhone app
+A GUI control derived from UIView that contain a UILabel inside. This control show the text and scroll it if needed.
