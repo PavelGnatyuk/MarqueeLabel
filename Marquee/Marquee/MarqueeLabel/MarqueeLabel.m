@@ -217,16 +217,16 @@ static CGFloat const _fadingLength = 12.0f;
 {
     if ( [self labelShouldScroll] ) {
         [self setPaused:![self paused]];
+        CALayer *layer = [[self labelChild] layer];  
         if ( [self paused] ) {
             
-            CALayer *layer = [[self labelChild] layer];  
             CFTimeInterval pausedTime = [layer convertTime:CACurrentMediaTime() fromLayer:nil];
             layer.speed = 0.0;
             layer.timeOffset = pausedTime;
             
         }
         else {
-            CALayer *layer = [[self labelChild] layer];  
+            
             CFTimeInterval pausedTime = [layer timeOffset];
             layer.speed = 1.0;
             layer.timeOffset = 0.0;
